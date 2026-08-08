@@ -11,31 +11,38 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.filipmihic.todoapp.R
+import com.filipmihic.todoapp.presentation.component.Wallpaper
 
 @Composable
 fun HomeScreen(
     onTaskClick: (String?) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
-        horizontalAlignment = Alignment.CenterHorizontally
+    Wallpaper(
+        lightImage = R.drawable.guts_light_kid,
+        darkImage = R.drawable.guts_dark
     ) {
-        Text(text = "Home Screen")
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = "Home Screen")
 
-        Button(onClick = {
-            onTaskClick(null)
-        }) {
-            Text("New task")
-        }
+            Button(onClick = {
+                onTaskClick(null)
+            }) {
+                Text("New task")
+            }
 
-        Button(onClick = {
-            onTaskClick("example task")
-        }) {
-            Text(text = "Open example task")
+            Button(onClick = {
+                onTaskClick("example task")
+            }) {
+                Text(text = "Open example task")
+            }
         }
     }
 }

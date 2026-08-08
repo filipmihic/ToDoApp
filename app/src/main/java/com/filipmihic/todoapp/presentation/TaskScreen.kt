@@ -11,6 +11,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.filipmihic.todoapp.R
+import com.filipmihic.todoapp.presentation.component.Wallpaper
 
 @Composable
 fun TaskScreen(
@@ -18,17 +20,22 @@ fun TaskScreen(
     onBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
-        horizontalAlignment = Alignment.CenterHorizontally
+    Wallpaper(
+        lightImage = R.drawable.guts_light,
+        darkImage = R.drawable.guts_dark_sky
     ) {
-        Text("Task Screen with task id: $taskId")
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text("Task Screen with task id: $taskId")
 
-        Button(onClick = { onBack() }) {
-            Text("Back to Home Screen")
+            Button(onClick = { onBack() }) {
+                Text("Back to Home Screen")
+            }
         }
     }
 }
