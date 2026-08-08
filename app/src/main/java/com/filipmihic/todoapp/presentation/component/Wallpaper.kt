@@ -23,7 +23,7 @@ fun Wallpaper(
     modifier: Modifier = Modifier,
     content: @Composable BoxScope.() -> Unit
 ) {
-    val image = if(isSystemInDarkTheme()) darkImage else lightImage
+    val image = if (isSystemInDarkTheme()) darkImage else lightImage
 
     Box(
         modifier = modifier

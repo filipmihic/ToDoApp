@@ -23,7 +23,7 @@ class TaskRepositoryImpl(private val taskDao: TaskDao) : TaskRepository {
     }
 
     override fun getAllTasks(): Flow<List<Task>> {
-        return taskDao.getAll().map {list -> list.map { it.toTask()}}
+        return taskDao.getAll().map { list -> list.map { it.toTask() } }
     }
 
 }
