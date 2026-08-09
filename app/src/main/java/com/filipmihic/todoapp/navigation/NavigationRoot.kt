@@ -2,6 +2,7 @@ package com.filipmihic.todoapp.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
@@ -15,6 +16,7 @@ fun NavigationRoot(modifier: Modifier = Modifier) {
     NavDisplay(
         modifier = modifier,
         backStack = backStack,
+        entryDecorators = listOf(rememberViewModelStoreNavEntryDecorator()),
         entryProvider = entryProvider {
             entry<Screen.Home> {
                 HomeScreen(

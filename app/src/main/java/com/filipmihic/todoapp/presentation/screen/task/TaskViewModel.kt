@@ -1,0 +1,98 @@
+package com.filipmihic.todoapp.presentation.screen.task
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.filipmihic.todoapp.ToDoApplication
+import com.filipmihic.todoapp.domain.Priority
+import com.filipmihic.todoapp.domain.Task
+import com.filipmihic.todoapp.domain.TaskRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+
+data class TaskUiState(
+    val title: String = "",
+    val description: String = "",
+    val priority: Priority = Priority.Default
+)
+
+class TaskViewModel(
+    private val taskRepository: TaskRepository,
+    private val taskId: String?
+) : ViewModel() {
+    private val _uiState = MutableStateFlow(TaskUiState())
+    val uiState: StateFlow<TaskUiState> = _uiState.asStateFlow()
+
+    private var existingTask: Task? = null
+
+    init {
+        if (taskId != null) {
+            viewModelScope.launch {
+                val task = taskRepository.getTaskById(taskId)
+                if (task != null) {
+                    existingTask = task
+                    _uiState.update {
+                        it.copy(
+                            title = task.title,
+                            description = task.description,
+                            priority = task.priority
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun updateTitle(newTitle: String) {
+        _uiState.update { it.copy(title = newTitle) }
+    }
+
+    fun updateDescription(newDescription: String) {
+        _uiState.update { it.copy(description = newDescription) }
+    }
+
+    fun updatePriority(newPriority: Priority) {
+        _uiState.update { it.copy(priority = newPriority) }
+    }
+
+    fun saveTask(onSuccess: () -> Unit) {
+        val state = _uiState.value
+
+        viewModelScope.launch {
+            val current = existingTask
+            if (current == null) {
+                taskRepository.createTask(
+                    Task(
+                        title = state.title,
+                        description = state.description,
+                        priority = state.priority
+                    )
+                )
+            } else {
+                taskRepository.updateTask(
+                    current.copy(
+                        title = state.title,
+                        description = state.description,
+                        priority = state.priority
+                    )
+                )
+            }
+            onSuccess()
+        }
+    }
+
+    companion object {
+        fun factory(taskId: String?): ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val application =
+                    this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as ToDoApplication
+                TaskViewModel(application.container.taskRepository, taskId)
+            }
+        }
+    }
+}

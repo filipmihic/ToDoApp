@@ -51,18 +51,18 @@ fun HomeScreen(
                     colors = topAppBarColors(
                         containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.6f)
                     ),
-                    title = { Text("Top app bar placeholder") }
+                    title = { Text("Active Tasks") }
                 )
             },
             floatingActionButton = {
                 ExtendedFloatingActionButton(
-                    onClick = { viewModel.addSampleTask() }, //onTaskClick(null) zameni
+                    onClick = { onTaskClick(null) },
                     elevation = FloatingActionButtonDefaults.elevation(10.dp)
                 ) {
                     Icon(
                         modifier = Modifier.size(16.dp),
                         imageVector = Icons.Default.Add,
-                        contentDescription = "New task"
+                        contentDescription = null
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(text = "New Task")
@@ -85,7 +85,11 @@ fun HomeScreen(
                         items = tasks,
                         key = { it.id }
                     ) { task ->
-                        TaskCard(task = task, onClick = onTaskClick)
+                        TaskCard(
+                            task = task,
+                            onClick = onTaskClick,
+                            onDelete = viewModel::deleteTask
+                        )
                     }
                 }
             }

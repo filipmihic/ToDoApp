@@ -21,12 +21,9 @@ class HomeViewModel(private val taskRepository: TaskRepository) : ViewModel() {
             initialValue = emptyList()
         )
 
-    //privremeno
-    fun addSampleTask() {
+    fun deleteTask(taskId: String) {
         viewModelScope.launch {
-            taskRepository.createTask(
-                Task(title = "Test ${System.currentTimeMillis()}")
-            )
+            taskRepository.deleteTask(taskId)
         }
     }
 
