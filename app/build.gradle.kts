@@ -60,6 +60,7 @@ dependencies {
 
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.sqlite.framework)
+    implementation(libs.androidx.compose.material.icons.core)
     ksp(libs.androidx.room.compiler)
 
     testImplementation(libs.junit)

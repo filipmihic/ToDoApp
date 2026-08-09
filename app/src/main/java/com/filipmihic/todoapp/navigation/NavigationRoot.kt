@@ -5,8 +5,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
-import com.filipmihic.todoapp.presentation.HomeScreen
-import com.filipmihic.todoapp.presentation.TaskScreen
+import com.filipmihic.todoapp.presentation.screen.home.HomeScreen
+import com.filipmihic.todoapp.presentation.screen.task.TaskScreen
 
 @Composable
 fun NavigationRoot(modifier: Modifier = Modifier) {

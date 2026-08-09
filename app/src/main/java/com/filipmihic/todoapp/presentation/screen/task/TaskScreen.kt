@@ -1,4 +1,4 @@
-package com.filipmihic.todoapp.presentation
+package com.filipmihic.todoapp.presentation.screen.task
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
