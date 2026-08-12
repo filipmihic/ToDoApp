@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -48,17 +49,24 @@ fun TaskScreen(
     ) {
         Scaffold(
             containerColor = Color.Transparent,
+            contentColor = MaterialTheme.colorScheme.onSurface,
             topBar = {
                 TopAppBar(
                     colors = topAppBarColors(
                         containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.6f)
                     ),
-                    title = { Text(if (taskId == null) "New Task" else "Update Task") },
+                    title = {
+                        Text(
+                            if (taskId == null) stringResource(R.string.new_task) else stringResource(
+                                R.string.update_task
+                            )
+                        )
+                    },
                     navigationIcon = {
                         IconButton(onClick = onBack) {
                             Icon(
-                                Icons.AutoMirrored.Filled.ArrowBack,
-                                null
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = stringResource(R.string.back)
                             )
                         }
                     }
@@ -79,7 +87,7 @@ fun TaskScreen(
                     modifier = Modifier.fillMaxWidth(),
                     value = uiState.title,
                     onValueChange = viewModel::updateTitle,
-                    label = { Text("Title") },
+                    label = { Text(stringResource(R.string.title)) },
                     singleLine = true
                 )
 
@@ -87,12 +95,12 @@ fun TaskScreen(
                     modifier = Modifier.fillMaxWidth(),
                     value = uiState.description,
                     onValueChange = viewModel::updateDescription,
-                    label = { Text("Description") },
+                    label = { Text(stringResource(R.string.description)) },
                     minLines = 3
                 )
 
                 Text(
-                    text = "Priority",
+                    text = stringResource(R.string.priority),
                     style = MaterialTheme.typography.titleMedium
                 )
 
@@ -111,7 +119,7 @@ fun TaskScreen(
                     onClick = { viewModel.saveTask(onSuccess = onBack) },
                     enabled = uiState.title.isNotBlank()
                 ) {
-                    Text(if (taskId == null) "Create" else "Update")
+                    Text(if (taskId == null) stringResource(R.string.create) else stringResource(R.string.update))
                 }
             }
         }

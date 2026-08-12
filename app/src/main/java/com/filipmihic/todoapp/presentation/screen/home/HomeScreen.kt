@@ -25,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -46,12 +47,13 @@ fun HomeScreen(
     ) {
         Scaffold(
             containerColor = Color.Transparent,
+            contentColor = MaterialTheme.colorScheme.onSurface,
             topBar = {
                 TopAppBar(
                     colors = topAppBarColors(
                         containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.6f)
                     ),
-                    title = { Text("Active Tasks") }
+                    title = { Text(stringResource(R.string.active_tasks)) }
                 )
             },
             floatingActionButton = {
@@ -65,7 +67,7 @@ fun HomeScreen(
                         contentDescription = null
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = "New Task")
+                    Text(text = stringResource(R.string.new_task))
                 }
             }
         ) { innerPadding ->
@@ -75,7 +77,7 @@ fun HomeScreen(
                         .padding(innerPadding)
                         .fillMaxSize(),
                     contentAlignment = Alignment.Center
-                ) { Text(text = "No active tasks") }
+                ) { Text(text = stringResource(R.string.no_active_tasks)) }
             } else {
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(12.dp),

@@ -17,7 +17,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.filipmihic.todoapp.R
@@ -35,7 +37,10 @@ fun TaskCard(
             .fillMaxWidth()
             .clickable { onClick(task.id) },
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)),
-        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surface.copy(alpha = 0.7f))
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f),
+            contentColor = MaterialTheme.colorScheme.onSurface
+        )
     ) {
         Row(
             modifier = Modifier
@@ -45,17 +50,28 @@ fun TaskCard(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = task.title,
+                Text(
+                    text = task.title,
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold)
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
                 if (task.description.isNotEmpty()) {
-                    Text(text = task.description)
+                    Text(
+                        text = task.description,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
                 }
             }
 
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(
+                modifier = Modifier.align(Alignment.CenterVertically),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
                 Text(
-                    text = "Priority",
+                    text = stringResource(R.string.priority),
                     style = MaterialTheme.typography.labelSmall
                 )
                 Text(
@@ -68,7 +84,7 @@ fun TaskCard(
             IconButton(onClick = { onDelete(task.id) }) {
                 Icon(
                     painter = painterResource(R.drawable.ic_sacrafice),
-                    contentDescription = "Delete task"
+                    contentDescription = stringResource(R.string.delete_task)
                 )
             }
         }
@@ -79,7 +95,33 @@ fun TaskCard(
 @Composable
 private fun TaskCardPreview(
 ) {
-    TaskCard(Task(title = "Example task", description = "Example Description"), onClick = {}, onDelete = {})
+    TaskCard(
+        Task(title = "Example task", description = "Example Description"),
+        onClick = {},
+        onDelete = {})
+}
+
+@Preview
+@Composable
+private fun TaskCardPreviewLongTitle(
+) {
+    TaskCard(
+        Task(title = "This is an example task with mega long title lets see how it looks like"),
+        onClick = {},
+        onDelete = {})
+}
+
+@Preview
+@Composable
+private fun TaskCardPreviewLongTitleAndDescription(
+) {
+    TaskCard(
+        Task(
+            title = "This is an example task with mega long title lets see how it looks like",
+            description = "Example Description with mega long description as well, it should have only 2 lines lets see"
+        ),
+        onClick = {},
+        onDelete = {})
 }
 
 @Preview
