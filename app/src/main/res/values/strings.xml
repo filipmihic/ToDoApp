@@ -3,12 +3,25 @@
     <string name="priority">Priority</string>
     <string name="delete_task">Delete task</string>
     <string name="active_tasks">Active Tasks</string>
+    <string name="completed_tasks">Completed Tasks</string>
+    <string name="all_tasks">Tasks</string>
+    <string name="no_active_tasks">No Active Tasks</string>
+    <string name="no_completed_tasks">No Completed Tasks</string>
+    <string name="no_tasks">No Tasks</string>
     <string name="new_task">New Task</string>
-    <string name="no_active_tasks">No active tasks</string>
     <string name="update_task">Update Task</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="create">Create</string>
     <string name="update">Update</string>
     <string name="back">Back</string>
+    <string name="filter">Filter</string>
+    <string name="filter_all">All</string>
+    <string name="filter_active">Active</string>
+    <string name="filter_completed">Completed</string>
+    <string name="priority_low">Low</string>
+    <string name="priority_medium">Medium</string>
+    <string name="priority_default">Default</string>
+    <string name="priority_high">High</string>
+    <string name="priority_top">Top</string>
 </resources>

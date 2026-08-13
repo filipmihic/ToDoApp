@@ -84,7 +84,7 @@ fun TaskCard(
                     style = MaterialTheme.typography.labelSmall
                 )
                 Text(
-                    text = task.priority.name,
+                    text = stringResource(task.priority.labelRes()),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold
                 )

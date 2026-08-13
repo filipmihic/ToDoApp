@@ -11,10 +11,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -22,6 +26,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,6 +47,7 @@ fun HomeScreen(
 ) {
     val viewModel: HomeViewModel = koinViewModel()
     val tasks by viewModel.tasks.collectAsStateWithLifecycle()
+    val filter by viewModel.taskFilter.collectAsStateWithLifecycle()
 
     Wallpaper(
         lightImage = R.drawable.guts_light_kid,
@@ -53,7 +61,15 @@ fun HomeScreen(
                     colors = topAppBarColors(
                         containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.6f)
                     ),
-                    title = { Text(stringResource(R.string.active_tasks)) }
+                    actions = { FilterMenu(onSelect = viewModel::setFilter) },
+                    title = {
+                        val id = when (filter) {
+                            TaskFilter.All -> R.string.all_tasks
+                            TaskFilter.Active -> R.string.active_tasks
+                            TaskFilter.Completed -> R.string.completed_tasks
+                        }
+                        Text(stringResource(id))
+                    }
                 )
             },
             floatingActionButton = {
@@ -77,7 +93,14 @@ fun HomeScreen(
                         .padding(innerPadding)
                         .fillMaxSize(),
                     contentAlignment = Alignment.Center
-                ) { Text(text = stringResource(R.string.no_active_tasks)) }
+                ) {
+                    val id = when (filter) {
+                        TaskFilter.All -> R.string.no_tasks
+                        TaskFilter.Active -> R.string.no_active_tasks
+                        TaskFilter.Completed -> R.string.no_completed_tasks
+                    }
+                    Text(stringResource(id))
+                }
             } else {
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -95,6 +118,36 @@ fun HomeScreen(
                         )
                     }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun FilterMenu(
+    onSelect: (TaskFilter) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    Box {
+        IconButton(onClick = { expanded = true }) {
+            Icon(
+                imageVector = Icons.Default.FilterList,
+                contentDescription = stringResource(R.string.filter)
+            )
+        }
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            TaskFilter.entries.forEach { filter ->
+                DropdownMenuItem(
+                    text = { Text(stringResource(filter.labelRes)) },
+                    onClick = {
+                        expanded = false
+                        onSelect(filter)
+                    }
+                )
             }
         }
     }

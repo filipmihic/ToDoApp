@@ -31,6 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.filipmihic.todoapp.R
 import com.filipmihic.todoapp.domain.Priority
 import com.filipmihic.todoapp.presentation.component.Wallpaper
+import com.filipmihic.todoapp.presentation.component.labelRes
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -110,7 +111,7 @@ fun TaskScreen(
                         FilterChip(
                             selected = uiState.priority == priority,
                             onClick = { viewModel.updatePriority(priority) },
-                            label = { Text(priority.name) }
+                            label = { Text(stringResource(priority.labelRes())) }
                         )
                     }
                 }
