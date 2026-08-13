@@ -24,4 +24,8 @@
     <string name="priority_default">Default</string>
     <string name="priority_high">High</string>
     <string name="priority_top">Top</string>
+    <string name="delete_title">Delete task?</string>
+    <string name="delete_text">Permanently delete this task?</string>
+    <string name="delete_confirm">Delete</string>
+    <string name="delete_dismiss">Cancel</string>
 </resources>

@@ -12,6 +12,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -22,6 +24,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
@@ -48,6 +51,7 @@ fun HomeScreen(
     val viewModel: HomeViewModel = koinViewModel()
     val tasks by viewModel.tasks.collectAsStateWithLifecycle()
     val filter by viewModel.taskFilter.collectAsStateWithLifecycle()
+    var taskIdToDelete by remember { mutableStateOf<String?>(null) }
 
     Wallpaper(
         lightImage = R.drawable.guts_light_kid,
@@ -87,6 +91,17 @@ fun HomeScreen(
                 }
             }
         ) { innerPadding ->
+            taskIdToDelete?.let { id ->
+                DeleteConfirmDialog(
+                    onConfirm = {
+                        viewModel.deleteTask(id)
+                        taskIdToDelete = null
+                    },
+                    onDismiss = {
+                        taskIdToDelete = null
+                    }
+                )
+            }
             if (tasks.isEmpty()) {
                 Box(
                     modifier = Modifier
@@ -113,7 +128,7 @@ fun HomeScreen(
                         TaskCard(
                             task = task,
                             onClick = onTaskClick,
-                            onDelete = viewModel::deleteTask,
+                            onDelete = { taskIdToDelete = it },
                             onToggleCompleted = viewModel::toggleCompleted
                         )
                     }
@@ -151,4 +166,31 @@ private fun FilterMenu(
             }
         }
     }
+}
+
+@Composable
+private fun DeleteConfirmDialog(
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.delete_title)) },
+        text = { Text(stringResource(R.string.delete_text)) },
+        confirmButton = {
+            TextButton(
+                onClick = onConfirm,
+                colors = ButtonDefaults.textButtonColors(
+                    contentColor = MaterialTheme.colorScheme.error
+                )
+            ) {
+                Text(stringResource(R.string.delete_confirm))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.delete_dismiss))
+            }
+        }
+    )
 }
