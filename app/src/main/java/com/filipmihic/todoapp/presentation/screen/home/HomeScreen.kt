@@ -23,6 +23,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -31,6 +35,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,6 +46,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.filipmihic.todoapp.R
 import com.filipmihic.todoapp.presentation.component.TaskCard
 import com.filipmihic.todoapp.presentation.component.Wallpaper
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,6 +58,10 @@ fun HomeScreen(
     val tasks by viewModel.tasks.collectAsStateWithLifecycle()
     val filter by viewModel.taskFilter.collectAsStateWithLifecycle()
     var taskIdToDelete by remember { mutableStateOf<String?>(null) }
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+    val deletedMessage = stringResource(R.string.task_deleted)
+    val undoLabel = stringResource(R.string.undo)
 
     Wallpaper(
         lightImage = R.drawable.guts_light_kid,
@@ -60,6 +70,7 @@ fun HomeScreen(
         Scaffold(
             containerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.onSurface,
+            snackbarHost = { SnackbarHost(snackbarHostState) },
             topBar = {
                 TopAppBar(
                     colors = topAppBarColors(
@@ -96,6 +107,16 @@ fun HomeScreen(
                     onConfirm = {
                         viewModel.deleteTask(id)
                         taskIdToDelete = null
+                        scope.launch {
+                            val result = snackbarHostState.showSnackbar(
+                                message = deletedMessage,
+                                actionLabel = undoLabel,
+                                duration = SnackbarDuration.Short
+                            )
+                            if (result == SnackbarResult.ActionPerformed) {
+                                viewModel.undoDelete()
+                            }
+                        }
                     },
                     onDismiss = {
                         taskIdToDelete = null

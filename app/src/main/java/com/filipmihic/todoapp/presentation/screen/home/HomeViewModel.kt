@@ -25,6 +25,8 @@ class HomeViewModel(private val taskRepository: TaskRepository) : ViewModel() {
     private val _taskFilter = MutableStateFlow(TaskFilter.All)
     val taskFilter: StateFlow<TaskFilter> = _taskFilter.asStateFlow()
 
+    private var lastDeletedTask: Task? = null
+
     fun setFilter(filter: TaskFilter) {
         _taskFilter.value = filter
     }
@@ -45,7 +47,17 @@ class HomeViewModel(private val taskRepository: TaskRepository) : ViewModel() {
 
     fun deleteTask(taskId: String) {
         viewModelScope.launch {
+            lastDeletedTask = taskRepository.getTaskById(taskId)
             taskRepository.deleteTask(taskId)
+        }
+    }
+
+    fun undoDelete() {
+        viewModelScope.launch {
+            lastDeletedTask?.let { task ->
+                taskRepository.createTask(task)
+                lastDeletedTask = null
+            }
         }
     }
 

@@ -28,4 +28,6 @@
     <string name="delete_text">Permanently delete this task?</string>
     <string name="delete_confirm">Delete</string>
     <string name="delete_dismiss">Cancel</string>
+    <string name="task_deleted">Task Deleted</string>
+    <string name="undo">Undo</string>
 </resources>
