@@ -44,7 +44,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.filipmihic.todoapp.R
-import com.filipmihic.todoapp.presentation.component.TaskCard
+import com.filipmihic.todoapp.presentation.component.SwipeableTaskCard
 import com.filipmihic.todoapp.presentation.component.Wallpaper
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -62,6 +62,19 @@ fun HomeScreen(
     val scope = rememberCoroutineScope()
     val deletedMessage = stringResource(R.string.task_deleted)
     val undoLabel = stringResource(R.string.undo)
+    val deleteWithUndo: (String) -> Unit = { id ->
+        viewModel.deleteTask(id)
+        scope.launch {
+            val result = snackbarHostState.showSnackbar(
+                message = deletedMessage,
+                actionLabel = undoLabel,
+                duration = SnackbarDuration.Short
+            )
+            if (result == SnackbarResult.ActionPerformed) {
+                viewModel.undoDelete()
+            }
+        }
+    }
 
     Wallpaper(
         lightImage = R.drawable.guts_light_kid,
@@ -105,18 +118,8 @@ fun HomeScreen(
             taskIdToDelete?.let { id ->
                 DeleteConfirmDialog(
                     onConfirm = {
-                        viewModel.deleteTask(id)
+                        deleteWithUndo(id)
                         taskIdToDelete = null
-                        scope.launch {
-                            val result = snackbarHostState.showSnackbar(
-                                message = deletedMessage,
-                                actionLabel = undoLabel,
-                                duration = SnackbarDuration.Short
-                            )
-                            if (result == SnackbarResult.ActionPerformed) {
-                                viewModel.undoDelete()
-                            }
-                        }
                     },
                     onDismiss = {
                         taskIdToDelete = null
@@ -146,10 +149,11 @@ fun HomeScreen(
                         items = tasks,
                         key = { it.id }
                     ) { task ->
-                        TaskCard(
+                        SwipeableTaskCard(
                             task = task,
                             onClick = onTaskClick,
                             onDelete = { taskIdToDelete = it },
+                            onSwipeDelete = deleteWithUndo,
                             onToggleCompleted = viewModel::toggleCompleted
                         )
                     }
