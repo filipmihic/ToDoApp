@@ -1,13 +1,18 @@
 package com.filipmihic.todoapp
 
 import android.app.Application
-import com.filipmihic.todoapp.di.AppContainer
+import com.filipmihic.todoapp.di.appModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
 
 class ToDoApplication : Application() {
-    lateinit var container: AppContainer
-
     override fun onCreate() {
         super.onCreate()
-        container = AppContainer(this)
+        startKoin {
+            androidLogger()
+            androidContext(this@ToDoApplication)
+            modules(appModule)
+        }
     }
 }

@@ -32,6 +32,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.filipmihic.todoapp.R
 import com.filipmihic.todoapp.domain.Priority
 import com.filipmihic.todoapp.presentation.component.Wallpaper
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,7 +42,7 @@ fun TaskScreen(
     onBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val viewModel: TaskViewModel = viewModel(factory = TaskViewModel.factory(taskId))
+    val viewModel: TaskViewModel = koinViewModel { parametersOf(taskId) }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Wallpaper(

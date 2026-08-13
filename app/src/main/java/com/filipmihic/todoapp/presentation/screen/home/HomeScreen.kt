@@ -32,13 +32,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.filipmihic.todoapp.R
 import com.filipmihic.todoapp.presentation.component.TaskCard
 import com.filipmihic.todoapp.presentation.component.Wallpaper
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     onTaskClick: (String?) -> Unit
 ) {
-    val viewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
+    val viewModel: HomeViewModel = koinViewModel()
     val tasks by viewModel.tasks.collectAsStateWithLifecycle()
 
     Wallpaper(

@@ -7,6 +7,7 @@ coreKtx = "1.19.0"
 activityCompose = "1.13.0"
 lifecycle = "2.11.0"
 composeBom = "2026.06.01"
+koinBom = "4.1.1"
 
 room = "3.0.1"
 navigation3 = "1.1.5"
@@ -52,6 +53,10 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 androidx-sqlite-framework = { group = "androidx.sqlite", name = "sqlite-framework", version.ref = "sqlite" }
 androidx-compose-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
+
+koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koinBom" }
+koin-android = { group = "io.insert-koin", name = "koin-android" }
+koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

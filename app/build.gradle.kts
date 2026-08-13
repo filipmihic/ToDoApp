@@ -62,6 +62,9 @@ dependencies {
     implementation(libs.androidx.sqlite.framework)
     implementation(libs.androidx.compose.material.icons.core)
     implementation(libs.androidx.compose.foundation)
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
     ksp(libs.androidx.room.compiler)
 
     testImplementation(libs.junit)

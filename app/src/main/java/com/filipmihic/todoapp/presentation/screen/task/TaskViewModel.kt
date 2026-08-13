@@ -85,14 +85,4 @@ class TaskViewModel(
             onSuccess()
         }
     }
-
-    companion object {
-        fun factory(taskId: String?): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val application =
-                    this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as ToDoApplication
-                TaskViewModel(application.container.taskRepository, taskId)
-            }
-        }
-    }
 }

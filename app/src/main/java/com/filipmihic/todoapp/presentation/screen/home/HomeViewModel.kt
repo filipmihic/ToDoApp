@@ -1,17 +1,14 @@
 package com.filipmihic.todoapp.presentation.screen.home
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.filipmihic.todoapp.ToDoApplication
 import com.filipmihic.todoapp.domain.Task
 import com.filipmihic.todoapp.domain.TaskRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 class HomeViewModel(private val taskRepository: TaskRepository) : ViewModel() {
     val tasks: StateFlow<List<Task>> = taskRepository.getAllTasks()
@@ -24,16 +21,6 @@ class HomeViewModel(private val taskRepository: TaskRepository) : ViewModel() {
     fun deleteTask(taskId: String) {
         viewModelScope.launch {
             taskRepository.deleteTask(taskId)
-        }
-    }
-
-    companion object {
-        val Factory: ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val application =
-                    this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as ToDoApplication
-                HomeViewModel(application.container.taskRepository)
-            }
         }
     }
 }
