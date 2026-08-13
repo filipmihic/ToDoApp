@@ -1,11 +1,7 @@
 package com.filipmihic.todoapp.presentation.screen.task
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.filipmihic.todoapp.ToDoApplication
 import com.filipmihic.todoapp.domain.Priority
 import com.filipmihic.todoapp.domain.Task
 import com.filipmihic.todoapp.domain.TaskRepository

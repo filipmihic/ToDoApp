@@ -20,6 +20,8 @@ interface TaskDao {
     @Query("SELECT * FROM tasks WHERE id = :id")
     suspend fun getById(id: String): TaskEntity?
 
-    @Query("SELECT * FROM tasks ORDER BY createdAt DESC")
+    @Query(
+        "SELECT * FROM tasks ORDER BY isCompleted ASC, createdAt DESC"
+    )
     fun getAll(): Flow<List<TaskEntity>>
 }

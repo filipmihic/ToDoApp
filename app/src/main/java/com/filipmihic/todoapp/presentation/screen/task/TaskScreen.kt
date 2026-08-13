@@ -28,7 +28,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.filipmihic.todoapp.R
 import com.filipmihic.todoapp.domain.Priority
 import com.filipmihic.todoapp.presentation.component.Wallpaper

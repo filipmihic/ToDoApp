@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
 
 class HomeViewModel(private val taskRepository: TaskRepository) : ViewModel() {
     val tasks: StateFlow<List<Task>> = taskRepository.getAllTasks()
@@ -21,6 +20,12 @@ class HomeViewModel(private val taskRepository: TaskRepository) : ViewModel() {
     fun deleteTask(taskId: String) {
         viewModelScope.launch {
             taskRepository.deleteTask(taskId)
+        }
+    }
+
+    fun toggleCompleted(task: Task) {
+        viewModelScope.launch {
+            taskRepository.updateTask(task.copy(isCompleted = !task.isCompleted))
         }
     }
 }
