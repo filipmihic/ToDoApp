@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">ToDoApp</string>
+    <string name="priority">Priorité</string>
+    <string name="delete_task">Supprimer la tâche</string>
+    <string name="active_tasks">Tâches actives</string>
+    <string name="completed_tasks">Tâches terminées</string>
+    <string name="all_tasks">Tâches</string>
+    <string name="no_active_tasks">Aucune tâche active</string>
+    <string name="no_completed_tasks">Aucune tâche terminée</string>
+    <string name="no_tasks">Aucune tâche</string>
+    <string name="new_task">Nouvelle tâche</string>
+    <string name="update_task">Tâche de mise à jour</string>
+    <string name="title">Titre</string>
+    <string name="description">Description</string>
+    <string name="create">Créer</string>
+    <string name="update">Mise à jour</string>
+    <string name="back">Dos</string>
+    <string name="filter">Filtre</string>
+    <string name="filter_all">Tous</string>
+    <string name="filter_active">Actif</string>
+    <string name="filter_completed">Complété</string>
+    <string name="priority_low">Faible</string>
+    <string name="priority_medium">Moyen</string>
+    <string name="priority_default">Défaut</string>
+    <string name="priority_high">Haut</string>
+    <string name="priority_top">Haut</string>
+    <string name="delete_title">Supprimer la tâche ?</string>
+    <string name="delete_text">Supprimer définitivement cette tâche ?</string>
+    <string name="delete_confirm">Supprimer</string>
+    <string name="delete_dismiss">Annuler</string>
+    <string name="task_deleted">Tâche supprimée</string>
+    <string name="undo">Défaire</string>
+    <string name="save_failed">Impossible d\'enregistrer la tâche, veuillez réessayer.</string>
+    <string name="generic_error">Erreur générique\n</string>
+    <string name="load_failed">Impossible de charger\n</string>
+</resources>

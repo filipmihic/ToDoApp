@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">ToDoApp</string>
+    <string name="priority">優先度</string>
+    <string name="delete_task">タスクを削除する</string>
+    <string name="active_tasks">アクティブなタスク</string>
+    <string name="completed_tasks">完了したタスク</string>
+    <string name="all_tasks">タスク</string>
+    <string name="no_active_tasks">アクティブなタスクはありません</string>
+    <string name="no_completed_tasks">完了したタスクはありません</string>
+    <string name="no_tasks">タスクなし</string>
+    <string name="new_task">新しいタスク</string>
+    <string name="update_task">タスクの更新</string>
+    <string name="title">タイトル</string>
+    <string name="description">説明</string>
+    <string name="create">作成する</string>
+    <string name="update">アップデート</string>
+    <string name="back">戻る</string>
+    <string name="filter">フィルター</string>
+    <string name="filter_all">全て</string>
+    <string name="filter_active">アクティブ</string>
+    <string name="filter_completed">完了</string>
+    <string name="priority_low">低い</string>
+    <string name="priority_medium">中くらい</string>
+    <string name="priority_default">デフォルト</string>
+    <string name="priority_high">高い</string>
+    <string name="priority_top">トップ</string>
+    <string name="delete_title">タスクを削除しますか？</string>
+    <string name="delete_text">このタスクを完全に削除しますか？</string>
+    <string name="delete_confirm">消去</string>
+    <string name="delete_dismiss">キャンセル</string>
+    <string name="task_deleted">タスクが削除されました</string>
+    <string name="undo">元に戻す</string>
+    <string name="save_failed">タスクを保存できませんでした。もう一度お試しください。</string>
+    <string name="generic_error">一般的なエラー\n</string>
+    <string name="load_failed">読み込めませんでした\n</string>
+</resources>

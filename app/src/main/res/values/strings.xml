@@ -1,5 +1,5 @@
-<resources>
-    <string name="app_name">ToDoApp</string>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name" tools:skip="ALL">ToDoApp</string>
     <string name="priority">Priority</string>
     <string name="delete_task">Delete task</string>
     <string name="active_tasks">Active Tasks</string>
