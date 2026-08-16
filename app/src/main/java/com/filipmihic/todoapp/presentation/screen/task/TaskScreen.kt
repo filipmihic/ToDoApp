@@ -116,6 +116,14 @@ fun TaskScreen(
                     }
                 }
 
+                uiState.error?.let { error ->
+                    Text(
+                        text = stringResource(error),
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = { viewModel.saveTask(onSuccess = onBack) },

@@ -30,4 +30,7 @@
     <string name="delete_dismiss">Cancel</string>
     <string name="task_deleted">Task Deleted</string>
     <string name="undo">Undo</string>
+    <string name="save_failed">Could not save task, please try again.</string>
+    <string name="generic_error">Generic error\n</string>
+    <string name="load_failed">Could not load\n</string>
 </resources>

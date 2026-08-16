@@ -44,6 +44,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.filipmihic.todoapp.R
+import com.filipmihic.todoapp.presentation.component.DisplayResult
+import com.filipmihic.todoapp.presentation.component.LoadingCard
 import com.filipmihic.todoapp.presentation.component.SwipeableTaskCard
 import com.filipmihic.todoapp.presentation.component.Wallpaper
 import kotlinx.coroutines.launch
@@ -62,18 +64,27 @@ fun HomeScreen(
     val scope = rememberCoroutineScope()
     val deletedMessage = stringResource(R.string.task_deleted)
     val undoLabel = stringResource(R.string.undo)
+    val genericError = stringResource(R.string.generic_error)
+    val showError: () -> Unit = {
+        scope.launch { snackbarHostState.showSnackbar(genericError) }
+    }
     val deleteWithUndo: (String) -> Unit = { id ->
-        viewModel.deleteTask(id)
-        scope.launch {
-            val result = snackbarHostState.showSnackbar(
-                message = deletedMessage,
-                actionLabel = undoLabel,
-                duration = SnackbarDuration.Short
-            )
-            if (result == SnackbarResult.ActionPerformed) {
-                viewModel.undoDelete()
-            }
-        }
+        viewModel.deleteTask(
+            taskId = id,
+            onSuccess = {
+                scope.launch {
+                    val result = snackbarHostState.showSnackbar(
+                        message = deletedMessage,
+                        actionLabel = undoLabel,
+                        duration = SnackbarDuration.Short
+                    )
+                    if (result == SnackbarResult.ActionPerformed) {
+                        viewModel.undoDelete(onError = showError)
+                    }
+                }
+            },
+            onError = showError
+        )
     }
 
     Wallpaper(
@@ -126,39 +137,61 @@ fun HomeScreen(
                     }
                 )
             }
-            if (tasks.isEmpty()) {
-                Box(
-                    modifier = Modifier
-                        .padding(innerPadding)
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    val id = when (filter) {
-                        TaskFilter.All -> R.string.no_tasks
-                        TaskFilter.Active -> R.string.no_active_tasks
-                        TaskFilter.Completed -> R.string.no_completed_tasks
-                    }
-                    Text(stringResource(id))
-                }
-            } else {
-                LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                    contentPadding = innerPadding
-                ) {
-                    items(
-                        items = tasks,
-                        key = { it.id }
-                    ) { task ->
-                        SwipeableTaskCard(
-                            task = task,
-                            onClick = onTaskClick,
-                            onDelete = { taskIdToDelete = it },
-                            onSwipeDelete = deleteWithUndo,
-                            onToggleCompleted = viewModel::toggleCompleted
+            tasks.DisplayResult(
+                modifier = Modifier,
+                onLoading = { LoadingCard() },
+                onError = { _ ->
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = stringResource(R.string.generic_error),
+                            color = MaterialTheme.colorScheme.error
                         )
                     }
+                },
+                onSuccess = { taskList ->
+                    if (taskList.isEmpty()) {
+                        Box(
+                            modifier = Modifier
+                                .padding(innerPadding)
+                                .fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            val id = when (filter) {
+                                TaskFilter.All -> R.string.no_tasks
+                                TaskFilter.Active -> R.string.no_active_tasks
+                                TaskFilter.Completed -> R.string.no_completed_tasks
+                            }
+                            Text(stringResource(id))
+                        }
+                    } else {
+                        LazyColumn(
+                            verticalArrangement = Arrangement.spacedBy(12.dp),
+                            contentPadding = innerPadding
+                        ) {
+                            items(
+                                items = taskList,
+                                key = { it.id }
+                            ) { task ->
+                                SwipeableTaskCard(
+                                    task = task,
+                                    onClick = onTaskClick,
+                                    onDelete = { taskIdToDelete = it },
+                                    onSwipeDelete = deleteWithUndo,
+                                    onToggleCompleted = {
+                                        viewModel.toggleCompleted(
+                                            task = it,
+                                            onError = showError
+                                        )
+                                    }
+                                )
+                            }
+                        }
+                    }
                 }
-            }
+            )
         }
     }
 }
