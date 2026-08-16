@@ -13,6 +13,8 @@ import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,23 +33,27 @@ fun SwipeableTaskCard(
     onToggleCompleted: (Task) -> Unit,
     modifier: Modifier = Modifier
 ) {
+
+    val currentTask by rememberUpdatedState(task)
+
     val state = rememberSwipeToDismissBoxState(
         confirmValueChange = { value ->
             when (value) {
                 SwipeToDismissBoxValue.StartToEnd -> {
-                    onToggleCompleted(task)
+                    onToggleCompleted(currentTask)
                     false
                 }
 
                 SwipeToDismissBoxValue.EndToStart -> {
-                    onSwipeDelete(task.id)
-                    true
+                    onSwipeDelete(currentTask.id)
+                    false
                 }
 
                 SwipeToDismissBoxValue.Settled -> false
             }
         }
     )
+
 
     SwipeToDismissBox(
         state = state,
